@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Minesweeper — Combo Edition</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="status">
+        <div class="combo">Combo: <span id="combo-count">0</span></div>
+        <div class="mines">Mines: <span id="mines-left">15</span></div>
+        <div class="hint-status">Hint: <span id="hint-status">Locked</span></div>
+      </div>
+      <div class="controls">
+        <button id="hint-button" disabled>Use Hint</button>
+        <button id="restart-button">Restart</button>
+      </div>
+    </header>
+
+    <main class="main-area">
+      <div id="board" class="board" aria-label="Minesweeper board"></div>
+
+      <aside class="sidebar" aria-label="Combo rewards">
+        <h3>Combo Rewards</h3>
+        <ul class="combo-list">
+          <li>
+            <strong>5 COMBO — Hint</strong>
+            <div class="desc">Unlocks the <em>Use Hint</em> button once. Highlights one guaranteed safe unopened cell. Usable once per 5-combo cycle.</div>
+          </li>
+          <li>
+            <strong>10 COMBO — Special Ability</strong>
+            <div class="desc">Automatically activates when reaching 10 combo. The next safe cell you click will auto-open surrounding safe cells (mines will not be opened). Combo resets after activation.</div>
+          </li>
+          <li>
+            <strong>Combo Rules</strong>
+            <div class="desc">Safe cell openings increase combo. Clicking a mine or restarting resets the combo counter.</div>
+          </li>
+        </ul>
+      </aside>
+    </main>
+
+    <div id="combo-popup" class="combo-popup"></div>
+
+    <div id="overlay" class="overlay hidden">
+      <div class="message-box">
+        <h2 id="result-title"></h2>
+        <p id="result-text"></p>
+        <button id="overlay-restart">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
