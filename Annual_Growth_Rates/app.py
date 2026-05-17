@@ -1,10 +1,11 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 
 # Flask application setup
 app = Flask(__name__)
 # Secret key is required for Flask session support.
-# In production, replace this with a secure random value.
-app.secret_key = "dev-secret-key-change-me"
+# In production, set the `SECRET_KEY` environment variable.
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
 
 # Read the stored GDP records from the session.
 def get_gdp_records():
@@ -92,4 +93,6 @@ def index():
 
 if __name__ == "__main__":
     # Run the Flask development server on localhost:5000
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    debug = os.environ.get("FLASK_DEBUG", "").lower() in ("1", "true", "yes")
+    app.run(host="0.0.0.0", port=port, debug=debug)
