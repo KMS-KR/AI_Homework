@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GDP Growth Rate Calculator</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card main-card">
+      <div class="card-header">
+        <div>
+          <p class="eyebrow">GDP Growth Rate</p>
+          <h1>연도별 GDP 성장률 계산기</h1>
+          <p class="intro">
+            연도와 GDP 값을 입력하면 Python Flask가 서버 사이드에서 성장률을 계산합니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="form-card">
+          <h2>데이터 입력</h2>
+          <form method="POST" action="{{ url_for('index') }}" class="input-form">
+            <label for="year">Year</label>
+            <input id="year" name="year" type="text" placeholder="예: 2021" required />
+
+            <label for="gdp">GDP</label>
+            <input id="gdp" name="gdp" type="text" placeholder="예: 1200" required />
+
+            <div class="button-row">
+              <button type="submit" name="action" value="add" class="btn btn-primary">Add Data</button>
+              <button type="submit" name="action" value="calculate" class="btn btn-secondary">Calculate Growth</button>
+            </div>
+          </form>
+
+          {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+          <div class="alerts">
+            {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endwith %}
+        </div>
+
+        <div class="table-card">
+          <h2>결과 테이블</h2>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>GDP</th>
+                  <th>Growth Rate (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if rows %}
+                {% for row in rows %}
+                <tr>
+                  <td>{{ row.year }}</td>
+                  <td>{{ row.gdp_display }}</td>
+                  <td>
+                    {% if row.growth_rate is none %}
+                      -
+                    {% else %}
+                      <span class="growth {% if row.growth_rate >= 0 %}positive{% else %}negative{% endif %}">
+                        {{ row.growth_rate | round(2) }}%
+                      </span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td colspan="3" class="empty-state">데이터가 없습니다. 먼저 GDP 데이터를 추가하세요.</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
